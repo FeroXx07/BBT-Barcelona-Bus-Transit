@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "490525439913",
+    "project_id": "citm-task2-project",
+    "storage_bucket": "citm-task2-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:490525439913:android:c0cbd256e0b25b033c76b8",
+        "android_client_info": {
+          "package_name": "com.example.barcelona_bus_transit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "490525439913-7ummruvrs1hr49c7m8uskc3ic564vmph.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDURpWyqorSpj-AKk0aanyLnJq3m8VQUw4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "490525439913-7ummruvrs1hr49c7m8uskc3ic564vmph.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

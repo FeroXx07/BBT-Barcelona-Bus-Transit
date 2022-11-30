@@ -11,7 +11,7 @@ Sections or services of the api that the app uses:
 
 ### MIT License
 
-Copyright (c) 2022 Ali Hassan Shahid
+Copyright (c) 2022 BBT-Barcelona-Bus-Transit, Authors: Ali Hassan Shahid & Marta LLurba
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

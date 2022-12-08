@@ -45,9 +45,9 @@ class BusLine {
         origin = json["properties"]["ORIGEN_LINIA"],
         destination = json["properties"]["DESTI_LINIA"],
         descriptionCalendarType = json["properties"]["NOM_TIPUS_CALENDARI"],
-        primaryColor = "#" + json["properties"]["COLOR_LINIA"],
-        secondaryColor = "#" + json["properties"]["COLOR_AUX_LINIA"],
-        textColor = "#" + json["properties"]["COLOR_TEXT_LINIA"];
+        primaryColor = "#${json["properties"]["COLOR_LINIA"]}",
+        secondaryColor = "#${json["properties"]["COLOR_AUX_LINIA"]}",
+        textColor = "#${json["properties"]["COLOR_TEXT_LINIA"]}";
 }
 
 Future<List<BusLine>> loadAllBusesLines() async {
@@ -61,6 +61,9 @@ Future<List<BusLine>> loadAllBusesLines() async {
   for (final jSonBusLine in jSonBusesLineList) {
     userList.add(BusLine.fromJson(jSonBusLine));
   }
+
+  userList.sort((a, b) => a.primaryColor.compareTo(b.primaryColor));
+
   return userList;
 }
 

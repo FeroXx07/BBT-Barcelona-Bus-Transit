@@ -77,9 +77,8 @@ class BusStop {
   String
       adress; //Dirección en la que se encuentra -- string : Av. Tibidabo, 38-40
   int order; //Orden dentro del recorrido de la línea -- number : 12
-  bool isOrigin; //Indica si la parada es el origen de la línea -- number : 0
-  bool
-      isDestionation; //Indica si la parada es el destino de la línea -- number : 1
+  int isOrigin; //Indica si la parada es el origen de la línea -- number : 0
+  int isDestionation; //Indica si la parada es el destino de la línea -- number : 1
   String colorRectangle; //Color (formato RGB hexadecimal) -- string :ED8E8C
 
   BusStop({
@@ -93,4 +92,45 @@ class BusStop {
     required this.isDestionation,
     required this.colorRectangle,
   });
+
+  BusStop.fromJson(Map<String, dynamic> json)
+      : uniqueId = json["id"],
+        code = json["properties"]["CODI_PARADA"],
+        name = json["properties"]["NOM_PARADA"],
+        description = json["properties"]["DESC_PARADA"],
+        adress = json["properties"]["ADRECA"],
+        order = json["properties"]["ORDRE"],
+        isOrigin = json["properties"]["ES_ORIGEN"],
+        isDestionation = json["properties"]["ES_DESTI"],
+        colorRectangle = json["properties"]["COLOR_REC"];
+}
+
+Future<List<BusStop>> loadAllBusesStopsFromCode(int lineCode) async {
+  String url = "https://api.tmb.cat/v1/transit/linies/bus/$lineCode/parades?";
+  url = url + getApiString();
+  final uri = Uri.parse(url);
+  final response = await http.get(uri);
+  final json = jsonDecode(response.body);
+  final jSonBusesStopsList = json["features"];
+  List<BusStop> stopsList = [];
+
+  for (final jSonBusLine in jSonBusesStopsList) {
+    stopsList.add(BusStop.fromJson(jSonBusLine));
+  }
+
+  // Sort the stops by the order inside line
+  stopsList.sort((a, b) => a.order.compareTo(b.order));
+
+  return stopsList;
+}
+
+Future<BusLine> getBusLine(int code) async {
+  String url = "https://api.tmb.cat/v1/transit/linies/bus/$code?";
+  url = url + getApiString();
+  final uri = Uri.parse(url);
+  final response = await http.get(uri);
+  Map<String, dynamic> busInfo = jsonDecode(response.body);
+  var busLine = BusLine.fromJson(busInfo["features"][0]);
+
+  return busLine;
 }

@@ -1,4 +1,5 @@
 import 'package:barcelona_bus_transit/screens/buses_lines_list_screen.dart';
+import 'package:barcelona_bus_transit/screens/buses_stops_list_screen.dart';
 import 'package:barcelona_bus_transit/widgets/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,9 +23,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         appBarTheme: const AppBarTheme(backgroundColor: myColor1),
       ),
-      initialRoute: '/home',
+      initialRoute: '/busesList',
       routes: {
-        '/home': (context) => const BusesLinesListScreen(),
+        '/busesList': (context) => const LinesListScreen(),
+        '/stopsList':(context) => const StopsListScreen(),
       },
     );
   }

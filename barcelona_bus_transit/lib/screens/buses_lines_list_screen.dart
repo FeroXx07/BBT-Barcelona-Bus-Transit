@@ -1,41 +1,25 @@
 import 'package:barcelona_bus_transit/model/tmb_lists.dart';
+import 'package:barcelona_bus_transit/widgets/appbar.dart';
+import 'package:barcelona_bus_transit/widgets/custom_icons.dart';
 import 'package:barcelona_bus_transit/widgets/hex_color.dart';
 import 'package:flutter/material.dart';
 
-class BusesLinesListScreen extends StatelessWidget {
-  const BusesLinesListScreen({super.key});
+class LinesListScreen extends StatelessWidget {
+  const LinesListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
+      appBar: const PreferredSize(
         //Here is the preferred height.
-        preferredSize: const Size.fromHeight(125),
-        child: AppBar(
-          title: const Text("Bus lines"),
-          centerTitle: true,
-          toolbarHeight: 125,
-          leading: IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.person),
-            iconSize: 80,
-            color: myColor2,
-          ),
-          actions: [
-            IconButton(
-              onPressed: (() {}),
-              icon: const Icon(Icons.more_vert),
-              iconSize: 50,
-              color: myColor4,
-            )
-          ],
-        ),
+        preferredSize: Size.fromHeight(100),
+        child: CustomAppbar(title: "Bus Lines",)
       ),
-      body: _BusLinesBuilder(),
+      body: _busLinesFutureBuilder(),
     );
   }
 
-  FutureBuilder<List<BusLine>> _BusLinesBuilder() {
+  FutureBuilder<List<BusLine>> _busLinesFutureBuilder() {
     return FutureBuilder(
       future: loadAllBusesLines(),
       builder: (context, snapshot) {
@@ -49,15 +33,15 @@ class BusesLinesListScreen extends StatelessWidget {
             ),
           );
         }
-        return _BusesLineList(linesList: snapshot.data!);
+        return _LinesTileBuilder(linesList: snapshot.data!);
       },
     );
   }
 }
 
-class _BusesLineList extends StatelessWidget {
+class _LinesTileBuilder extends StatelessWidget {
   final List<BusLine> linesList;
-  const _BusesLineList({
+  const _LinesTileBuilder({
     required this.linesList,
   });
 
@@ -71,7 +55,7 @@ class _BusesLineList extends StatelessWidget {
           child: ListView.builder(
             itemCount: linesList!.length,
             itemBuilder: (context, index) {
-              return BusLineTile(busLine: linesList![index]);
+              return _LineTile(busLine: linesList![index]);
             },
           ),
         ),
@@ -80,10 +64,9 @@ class _BusesLineList extends StatelessWidget {
   }
 }
 
-class BusLineTile extends StatelessWidget {
+class _LineTile extends StatelessWidget {
   final BusLine busLine;
-  const BusLineTile({
-    super.key,
+  const _LineTile({
     required this.busLine,
   });
 
@@ -99,9 +82,6 @@ class BusLineTile extends StatelessWidget {
         ),
       ),
       child: ListTile(
-        onTap: () {
-          
-        },
         // leading: CircleAvatar(
         //   backgroundImage: NetworkImage(user.avatarUrl),
         // ),
@@ -110,64 +90,14 @@ class BusLineTile extends StatelessWidget {
         trailing: const IsFavoriteStar(isFavorite: false),
         contentPadding:
             const EdgeInsets.only(top: 8, bottom: 8, left: 5, right: 15),
-        // onTap: () {
-        //   Navigator.of(context).pushNamed(
-        //     '/user-details',
-        //     arguments: user,
-        //   );
-        // },
+        onTap: () {
+          Navigator.of(context).pushNamed(
+            '/stopsList',
+            arguments: busLine.code,
+          );
+        },
       ),
     );
   }
 }
 
-class IsFavoriteStar extends StatefulWidget {
-
-  const IsFavoriteStar({
-    Key? key,
-    required isFavorite,
-  }) : super(key: key);
-
-  @override
-  State<IsFavoriteStar> createState() => _IsFavoriteStarState();
-}
-
-class _IsFavoriteStarState extends State<IsFavoriteStar> {
-  final bool isFavorite = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return  IconButton(
-      onPressed: () {
-      },
-      icon: const Icon(Icons.star_border));
-  }
-}
-
-class CircleIcon extends StatelessWidget {
-  const CircleIcon({
-    Key? key,
-    required this.busLine,
-  }) : super(key: key);
-
-  final BusLine busLine;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 50,
-      decoration: BoxDecoration(
-        color: hexToColor(busLine.primaryColor),
-        shape: BoxShape.circle,
-      ),
-      child: Center(
-        child: Text(
-          busLine.name,
-          style: const TextStyle(
-            color: Colors.white,
-          ),
-        ),
-      ),
-    );
-  }
-}

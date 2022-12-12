@@ -67,6 +67,32 @@ Future<List<BusLine>> loadAllBusesLines() async {
   return userList;
 }
 
+class StopConnections {
+  int stopCode;
+  int lineCode;
+  String name;
+  String operator;
+  String colorText;
+  String colorRect;
+
+  StopConnections({
+    required this.stopCode,
+    required this.lineCode,
+    required this.name,
+    required this.operator,
+    required this.colorText,
+    required this.colorRect,
+  });
+
+  StopConnections.fromJson(Map<String, dynamic> json)
+      : stopCode = json["properties"]["CODI_PARADA"],
+        lineCode = json["properties"]["CODI_LINIA"],
+        name = json["properties"]["NOM_LINIA"],
+        operator = json["properties"]["NOM_OPERADOR"],
+        colorRect = json["properties"]["COLOR_LINIA"],
+        colorText = json["properties"]["COLOR_TEXT_LINIA"];
+}
+
 class BusStop {
   String uniqueId;
   int code; //Código identificador de la parada -- number : 1775
@@ -81,7 +107,7 @@ class BusStop {
   int isDestionation; //Indica si la parada es el destino de la línea -- number : 1
   String colorRectangle; //Color (formato RGB hexadecimal) -- string :ED8E8C
 
-  List<BusLine> connections = [];
+  List<StopConnections> connections = [];
 
   BusStop({
     required this.uniqueId,
@@ -111,17 +137,17 @@ class BusStop {
   }
 }
 
-Future<List<BusLine>> connectionsStopFromCode(int stopCode) async {
+Future<List<StopConnections>> connectionsStopFromCode(int stopCode) async {
   String url = "https://api.tmb.cat/v1/transit/parades/$stopCode/corresp?";
   url = url + getApiString();
   final uri = Uri.parse(url);
   final response = await http.get(uri);
   final json = jsonDecode(response.body);
   final jSonBusesLineList = json["features"];
-  List<BusLine> list = [];
+  List<StopConnections> list = [];
   for (final jSonBusLine in jSonBusesLineList) {
     // Check for only buses in the json, then add the buses only
-    BusLine b = BusLine.fromJson(jSonBusLine);
+    StopConnections b = StopConnections.fromJson(jSonBusLine);
     if (jSonBusLine["properties"]["NOM_OPERADOR"] == "TB") {
       list.add(b);
     }

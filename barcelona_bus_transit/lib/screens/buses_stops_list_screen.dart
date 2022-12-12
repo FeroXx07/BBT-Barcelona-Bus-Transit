@@ -56,7 +56,7 @@ class _StopsListBuilder extends StatelessWidget {
     return Scaffold(
       body: Container(
         color: myColor4,
-        padding: const EdgeInsets.all(30),
+        padding: const EdgeInsets.only(left: 30, top: 30, bottom: 30),
         child: FutureBuilder(
           // Pass the line code from the provider
           future: getBusLine(context.watch<int>()),
@@ -111,24 +111,22 @@ class _StopTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return ListTile(
-      dense: true,
       leading: Stack(
         children: [
-           Padding(
-             padding: const EdgeInsets.all(4.0),
-             child: Container(
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Container(
               width: 20,
               height: 20,
               decoration: BoxDecoration(
                 color: rectColor,
                 shape: BoxShape.circle,
               ),
+            ),
           ),
-           ),
           Padding(
-            padding: const EdgeInsets.only(left:8.0, right: 8.0),
+            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
             child: Container(
               width: 10,
               decoration: BoxDecoration(
@@ -136,9 +134,31 @@ class _StopTile extends StatelessWidget {
               ),
             ),
           ),
-         
         ],
       ),
+      trailing: SizedBox(
+        width: 100,
+        height: 50,
+        child: GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 4,
+              crossAxisSpacing: 4,
+              mainAxisSpacing: 4,
+            ),
+            itemCount: busStop.connections.length,
+            itemBuilder: ((context, index) {
+              return Container(
+                color: myColor5,
+                child: Text(
+                  busStop.connections[index].name,
+                  style: TextStyle(
+                    color: myColor4,
+                  ),
+                ),
+              );
+            })),
+      ),
+
       title: Text(busStop.name),
       //subtitle: Text(busStop.adress),
     );

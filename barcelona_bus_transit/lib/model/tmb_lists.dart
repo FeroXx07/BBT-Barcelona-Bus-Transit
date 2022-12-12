@@ -81,6 +81,8 @@ class BusStop {
   int isDestionation; //Indica si la parada es el destino de la línea -- number : 1
   String colorRectangle; //Color (formato RGB hexadecimal) -- string :ED8E8C
 
+  List<BusLine> connections = [];
+
   BusStop({
     required this.uniqueId,
     required this.code,
@@ -103,6 +105,29 @@ class BusStop {
         isOrigin = json["properties"]["ES_ORIGEN"],
         isDestionation = json["properties"]["ES_DESTI"],
         colorRectangle = json["properties"]["COLOR_REC"];
+
+  void loadCorrespondences() async {
+    connections = await connectionsStopFromCode(code);
+  }
+}
+
+Future<List<BusLine>> connectionsStopFromCode(int stopCode) async {
+  String url = "https://api.tmb.cat/v1/transit/parades/$stopCode/corresp?";
+  url = url + getApiString();
+  final uri = Uri.parse(url);
+  final response = await http.get(uri);
+  final json = jsonDecode(response.body);
+  final jSonBusesLineList = json["features"];
+  List<BusLine> list = [];
+  for (final jSonBusLine in jSonBusesLineList) {
+    // Check for only buses in the json, then add the buses only
+    BusLine b = BusLine.fromJson(jSonBusLine);
+    if (jSonBusLine["properties"]["NOM_OPERADOR"] == "TB") {
+      list.add(b);
+    }
+  }
+
+  return list;
 }
 
 Future<List<BusStop>> loadAllBusesStopsFromCode(int lineCode) async {
@@ -116,6 +141,7 @@ Future<List<BusStop>> loadAllBusesStopsFromCode(int lineCode) async {
 
   for (final jSonBusLine in jSonBusesStopsList) {
     stopsList.add(BusStop.fromJson(jSonBusLine));
+    stopsList.last.loadCorrespondences();
   }
 
   // Sort the stops by the order inside line

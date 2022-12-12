@@ -11,10 +11,11 @@ class LinesListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const PreferredSize(
-        //Here is the preferred height.
-        preferredSize: Size.fromHeight(100),
-        child: CustomAppbar(title: "Bus Lines",)
-      ),
+          //Here is the preferred height.
+          preferredSize: Size.fromHeight(100),
+          child: CustomAppbar(
+            title: "Bus Lines",
+          )),
       body: _busLinesFutureBuilder(),
     );
   }
@@ -53,9 +54,9 @@ class _LinesTileBuilder extends StatelessWidget {
           color: myColor3,
           padding: const EdgeInsets.all(20),
           child: ListView.builder(
-            itemCount: linesList!.length,
+            itemCount: linesList.length,
             itemBuilder: (context, index) {
-              return _LineTile(busLine: linesList![index]);
+              return _LineTile(busLine: linesList[index]);
             },
           ),
         ),
@@ -74,13 +75,7 @@ class _LineTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(width: 6, color: myColor2),
-        borderRadius: const BorderRadius.all(
-          Radius.circular(40),
-        ),
-      ),
+      decoration: roundedDecoration(),
       child: ListTile(
         // leading: CircleAvatar(
         //   backgroundImage: NetworkImage(user.avatarUrl),
@@ -100,4 +95,3 @@ class _LineTile extends StatelessWidget {
     );
   }
 }
-

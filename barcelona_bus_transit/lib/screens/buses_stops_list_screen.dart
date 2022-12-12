@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 class StopsListScreen extends StatelessWidget {
   const StopsListScreen({super.key});
 
+  // The main screen of the page with its appbar
   @override
   Widget build(BuildContext context) {
     final lineCode = ModalRoute.of(context)!.settings.arguments as int;
@@ -23,6 +24,7 @@ class StopsListScreen extends StatelessWidget {
     );
   }
 
+  // The future builder correctnes procedure
   FutureBuilder<List<BusStop>> _busStopsFutureBuilder(int code) {
     return FutureBuilder(
       future: loadAllBusesStopsFromCode(code),
@@ -37,72 +39,108 @@ class StopsListScreen extends StatelessWidget {
             ),
           );
         }
-        return _StopsTileBuilder(stopsList: snapshot.data!);
+        return _StopsListBuilder(stopsList: snapshot.data!);
       },
     );
   }
 }
 
-class _StopsTileBuilder extends StatefulWidget {
+class _StopsListBuilder extends StatelessWidget {
   final List<BusStop> stopsList;
-
-  _StopsTileBuilder({
+  const _StopsListBuilder({
     required this.stopsList,
   });
 
   @override
-  State<_StopsTileBuilder> createState() => _StopsTileBuilderState();
-}
-
-class _StopsTileBuilderState extends State<_StopsTileBuilder> {
-  String name = "Loading";
-
-  BusLine? busLine;
-
-  @override
   Widget build(BuildContext context) {
-    
-    getBusLine(context.watch<int>()).then((value) {
-      BusLine busLine = value as BusLine;
-      
-      name = busLine.name;
-
-    });
     return Scaffold(
-      body: Scrollbar(
-        child: Container(
-          color: myColor3,
-          padding: const EdgeInsets.all(30),
-          child: Column(
-            children: [
-              Center(child: Text(name)),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: widget.stopsList!.length,
-                  itemBuilder: (context, index) {
-                    return _StopTile(busStop: widget.stopsList![index]);
-                  },
+      body: Container(
+        color: myColor4,
+        padding: const EdgeInsets.all(30),
+        child: FutureBuilder(
+          // Pass the line code from the provider
+          future: getBusLine(context.watch<int>()),
+          builder: ((context, snapshot) {
+            if (snapshot.hasError) {
+              return ErrorWidget(snapshot.error.toString());
+            }
+            if (!snapshot.hasData) {
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+            }
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  decoration: roundedDecoration(
+                      borderColor: hexToColor(snapshot.data!.primaryColor),
+                      interiorColor: hexToColor(snapshot.data!.primaryColor)),
+                  child: Center(
+                      child: Text(
+                    snapshot.data!.name,
+                    style:
+                        TextStyle(color: hexToColor(snapshot.data!.textColor)),
+                  )),
                 ),
-              ),
-            ],
-          ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: stopsList.length,
+                    itemBuilder: ((context, index) {
+                      return _StopTile(
+                        busStop: stopsList[index],
+                        rectColor: hexToColor(snapshot.data!.primaryColor),
+                      );
+                    }),
+                  ),
+                ),
+              ],
+            );
+          }),
         ),
       ),
     );
   }
 }
 
+// Each individual stop tile
 class _StopTile extends StatelessWidget {
   final BusStop busStop;
-  const _StopTile({required this.busStop});
+  final Color rectColor;
+  const _StopTile({required this.busStop, required this.rectColor});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ListTile(
-        title: Text(busStop.name),
-        subtitle: Text(busStop.adress),
+    Size size = MediaQuery.of(context).size;
+    return ListTile(
+      dense: true,
+      leading: Stack(
+        children: [
+           Padding(
+             padding: const EdgeInsets.all(4.0),
+             child: Container(
+              width: 20,
+              height: 20,
+              decoration: BoxDecoration(
+                color: rectColor,
+                shape: BoxShape.circle,
+              ),
+          ),
+           ),
+          Padding(
+            padding: const EdgeInsets.only(left:8.0, right: 8.0),
+            child: Container(
+              width: 10,
+              decoration: BoxDecoration(
+                color: rectColor,
+              ),
+            ),
+          ),
+         
+        ],
       ),
+      title: Text(busStop.name),
+      //subtitle: Text(busStop.adress),
     );
   }
 }

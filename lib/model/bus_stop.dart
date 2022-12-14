@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:barcelona_bus_transit/model/stop_connections.dart';
-import 'package:barcelona_bus_transit/model/tmb_api.dart';
+import 'package:barcelona_bus_transit/utilities/tmb_api.dart';
 import 'package:http/http.dart' as http;
 
 class BusStop {

@@ -1,6 +1,6 @@
 
 import 'package:barcelona_bus_transit/model/bus_line.dart';
-import 'package:barcelona_bus_transit/model/hex_color.dart';
+import 'package:barcelona_bus_transit/utilities/hex_color.dart';
 import 'package:barcelona_bus_transit/widgets/custom_icons.dart';
 import 'package:flutter/material.dart';
 

@@ -1,6 +1,6 @@
 // Each individual stop tile
 import 'package:barcelona_bus_transit/model/bus_stop.dart';
-import 'package:barcelona_bus_transit/model/hex_color.dart';
+import 'package:barcelona_bus_transit/utilities/hex_color.dart';
 import 'package:flutter/material.dart';
 
 class StopTile extends StatelessWidget {
@@ -28,20 +28,39 @@ class StopTile extends StatelessWidget {
             ),
             itemCount: busStop.connections.length,
             itemBuilder: ((context, index) {
-              return Container(
-                color: myColor5,
-                child: Text(
-                  busStop.connections[index].name,
-                  style: const TextStyle(
-                    color: myColor4,
-                  ),
-                ),
+              return Connection(
+                busStop: busStop,
+                index: index,
               );
             })),
       ),
 
       title: Text(busStop.name),
       //subtitle: Text(busStop.adress),
+    );
+  }
+}
+
+class Connection extends StatelessWidget {
+  final index;
+  const Connection({
+    Key? key,
+    required this.busStop,
+    required this.index,
+  }) : super(key: key);
+
+  final BusStop busStop;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: myColor5,
+      child: Text(
+        busStop.connections[index].name,
+        style: const TextStyle(
+          color: myColor4,
+        ),
+      ),
     );
   }
 }

@@ -1,6 +1,8 @@
-import 'package:barcelona_bus_transit/model/tmb_lists.dart';
+import 'package:barcelona_bus_transit/model/bus_line.dart';
+import 'package:barcelona_bus_transit/model/bus_stop.dart';
 import 'package:barcelona_bus_transit/widgets/appbar.dart';
-import 'package:barcelona_bus_transit/widgets/hex_color.dart';
+import 'package:barcelona_bus_transit/widgets/bus_stop_tile.dart';
+import 'package:barcelona_bus_transit/model/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -87,7 +89,7 @@ class _StopsListBuilder extends StatelessWidget {
                   child: ListView.builder(
                     itemCount: stopsList.length,
                     itemBuilder: ((context, index) {
-                      return _StopTile(
+                      return StopTile(
                         busStop: stopsList[index],
                         rectColor: hexToColor(snapshot.data!.primaryColor),
                       );
@@ -103,64 +105,3 @@ class _StopsListBuilder extends StatelessWidget {
   }
 }
 
-// Each individual stop tile
-class _StopTile extends StatelessWidget {
-  final BusStop busStop;
-  final Color rectColor;
-  const _StopTile({required this.busStop, required this.rectColor});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Container(
-              width: 20,
-              height: 20,
-              decoration: BoxDecoration(
-                color: rectColor,
-                shape: BoxShape.circle,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-            child: Container(
-              width: 10,
-              decoration: BoxDecoration(
-                color: rectColor,
-              ),
-            ),
-          ),
-        ],
-      ),
-      trailing: SizedBox(
-        width: 100,
-        height: 50,
-        child: GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4,
-              crossAxisSpacing: 4,
-              mainAxisSpacing: 4,
-            ),
-            itemCount: busStop.connections.length,
-            itemBuilder: ((context, index) {
-              return Container(
-                color: myColor5,
-                child: Text(
-                  busStop.connections[index].name,
-                  style: const TextStyle(
-                    color: myColor4,
-                  ),
-                ),
-              );
-            })),
-      ),
-
-      title: Text(busStop.name),
-      //subtitle: Text(busStop.adress),
-    );
-  }
-}

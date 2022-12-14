@@ -1,3 +1,6 @@
+#ignore goolge-services
+google-services.json
+
 # Miscellaneous
 *.class
 *.log

@@ -22,6 +22,6 @@ class StopConnections {
         lineCode = json["properties"]["CODI_LINIA"],
         name = json["properties"]["NOM_LINIA"],
         operator = json["properties"]["NOM_OPERADOR"],
-        colorRect = json["properties"]["COLOR_LINIA"],
-        colorText = json["properties"]["COLOR_TEXT_LINIA"];
+        colorRect = "#${json["properties"]["COLOR_LINIA"]}",
+        colorText = "#${json["properties"]["COLOR_TEXT_LINIA"]}";
 }

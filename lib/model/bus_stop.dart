@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:barcelona_bus_transit/model/stop_connections.dart';
 import 'package:barcelona_bus_transit/utilities/tmb_api.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 
 class BusStop {
@@ -40,7 +41,31 @@ class BusStop {
         order = json["properties"]["ORDRE"],
         isOrigin = json["properties"]["ES_ORIGEN"],
         isDestionation = json["properties"]["ES_DESTI"],
-        colorRectangle = json["properties"]["COLOR_REC"];
+        colorRectangle = "#${json["properties"]["COLOR_REC"]}";
+
+  BusStop.fromFireStore(Map<String, dynamic> json)
+      : uniqueId = json["uniqueId"],
+        code = json["code"],
+        name = json["name"],
+        description = json["description"],
+        adress = json["adress"],
+        order = json["order"],
+        isOrigin = json["isOrigin"],
+        isDestionation = json["isDestionation"],
+        colorRectangle = "#${json["colorRectangle"]}";
+
+  Map<String, dynamic> toFirestore() => {
+        'uniqueId': uniqueId,
+        'code': code,
+        'name': name,
+        'description': description,
+        'adress': adress,
+        'order': order,
+        'isOrigin': isOrigin,
+        'isDestionation': isDestionation,
+        'colorRectangle': colorRectangle,
+        'lastUpdate': Timestamp.now(),
+      };
 
   void loadCorrespondences() async {
     connections = await connectionsStopFromCode(code);
@@ -85,4 +110,3 @@ Future<List<BusStop>> loadAllBusesStopsFromCode(int lineCode) async {
 
   return stopsList;
 }
-

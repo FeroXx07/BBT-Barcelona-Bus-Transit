@@ -18,7 +18,7 @@ class StopsListBuilder extends StatelessWidget {
     return Scaffold(
       body: Container(
         color: myColor4,
-        padding: const EdgeInsets.only(left: 30, top: 30, bottom: 30),
+        padding: const EdgeInsets.all(30),
         child: FutureBuilder(
           // Pass the line code from the provider
           future: getBusLine(context.watch<int>()),

@@ -19,30 +19,35 @@ class StopTile extends StatelessWidget {
       ),
       trailing: SizedBox(
         width: 100,
-        height: 50,
+        height: 60,
         child: GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4,
-              crossAxisSpacing: 4,
-              mainAxisSpacing: 4,
-            ),
-            itemCount: busStop.connections.length,
-            itemBuilder: ((context, index) {
-              return Connection(
-                busStop: busStop,
-                index: index,
-              );
-            })),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 4,
+            crossAxisSpacing: 1,
+            mainAxisSpacing: 1,
+          ),
+          itemCount: busStop.connections.length,
+          itemBuilder: ((context, index) {
+            return Connection(
+              busStop: busStop,
+              index: index,
+            );
+          }),
+        ),
       ),
 
-      title: Text(busStop.name),
+      title: Text(
+        busStop.name,
+        style: const TextStyle(fontSize: 11),
+      ),
+
       //subtitle: Text(busStop.adress),
     );
   }
 }
 
 class Connection extends StatelessWidget {
-  final index;
+  final int index;
   const Connection({
     Key? key,
     required this.busStop,
@@ -53,12 +58,15 @@ class Connection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: myColor5,
-      child: Text(
-        busStop.connections[index].name,
-        style: const TextStyle(
-          color: myColor4,
+    return Card(
+      color: hexToColor(busStop.connections[index].colorRect),
+      child: Center(
+        child: Text(
+          busStop.connections[index].name,
+          style: TextStyle(
+            fontSize: 8,
+            color: hexToColor(busStop.connections[index].colorText),
+          ),
         ),
       ),
     );
@@ -98,7 +106,7 @@ class StepperCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(4.0),
+      padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 14),
       child: Container(
         width: 20,
         height: 20,

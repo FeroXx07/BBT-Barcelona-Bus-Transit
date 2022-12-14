@@ -1,6 +1,7 @@
 import 'package:barcelona_bus_transit/model/bus_stop.dart';
 import 'package:barcelona_bus_transit/widgets/appbar.dart';
 import 'package:barcelona_bus_transit/widgets/bus_stop_list.dart';
+import 'package:barcelona_bus_transit/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -33,16 +34,10 @@ class StopsListScreen extends StatelessWidget {
           return ErrorWidget(snapshot.error.toString());
         }
         if (!snapshot.hasData) {
-          return const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
+          return const Loading();
         }
         return StopsListBuilder(stopsList: snapshot.data!);
       },
     );
   }
 }
-
-

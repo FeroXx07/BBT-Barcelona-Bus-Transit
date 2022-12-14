@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:barcelona_bus_transit/utilities/tmb_api.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 
 class BusLine {
@@ -47,6 +48,32 @@ class BusLine {
         primaryColor = "#${json["properties"]["COLOR_LINIA"]}",
         secondaryColor = "#${json["properties"]["COLOR_AUX_LINIA"]}",
         textColor = "#${json["properties"]["COLOR_TEXT_LINIA"]}";
+
+  BusLine.fromFireStore(Map<String, dynamic> json)
+      : uniqueId = json["uniqueId"],
+        code = json["code"],
+        name = json["name"],
+        description = json["description"],
+        origin = json["origin"],
+        destination = json["destination"],
+        descriptionCalendarType = json["descriptionCalendarType"],
+        primaryColor = "#${json["primaryColor"]}",
+        secondaryColor = "#${json["secondaryColor"]}",
+        textColor = "#${json["textColor"]}";
+
+  Map<String, dynamic> toFireStore() => {
+        'uniqueId': uniqueId,
+        'code': code,
+        'name': name,
+        'description': description,
+        'origin': origin,
+        'destination': destination,
+        'descriptionCalendarType': descriptionCalendarType,
+        'primaryColor': primaryColor,
+        'secondaryColor': secondaryColor,
+        'textColor': textColor,
+        'lastUpdate': Timestamp.now(),
+      };
 }
 
 Future<List<BusLine>> loadAllBusesLines() async {

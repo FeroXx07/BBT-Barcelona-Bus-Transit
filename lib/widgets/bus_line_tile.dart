@@ -1,12 +1,14 @@
-
 import 'package:barcelona_bus_transit/model/bus_line.dart';
+import 'package:barcelona_bus_transit/utilities/database.dart';
 import 'package:barcelona_bus_transit/utilities/hex_color.dart';
-import 'package:barcelona_bus_transit/widgets/custom_icons.dart';
+import 'package:barcelona_bus_transit/widgets/favorite_star_trailing.dart';
+import 'package:barcelona_bus_transit/widgets/icons/circle_icon.dart';
 import 'package:flutter/material.dart';
 
 class LineTile extends StatelessWidget {
   final BusLine busLine;
-  const LineTile({super.key, 
+  const LineTile({
+    super.key,
     required this.busLine,
   });
 
@@ -21,7 +23,16 @@ class LineTile extends StatelessWidget {
         // ),
         leading: CircleIcon(busLine: busLine),
         title: Text(busLine.description),
-        trailing: const IsFavoriteStar(isFavorite: false),
+        trailing: IsFavoriteStar(
+            isFavorite: false,
+            onFavoritePressed: (output) {
+              if (output == true) {
+                setFavoriteBusLine(busLine);
+              }
+              else{
+                removeFavoriteBusLine(busLine);
+              }
+            }),
         contentPadding:
             const EdgeInsets.only(top: 8, bottom: 8, left: 5, right: 15),
         onTap: () {

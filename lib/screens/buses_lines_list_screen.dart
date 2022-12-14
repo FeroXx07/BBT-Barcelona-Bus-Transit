@@ -1,6 +1,7 @@
 import 'package:barcelona_bus_transit/model/bus_line.dart';
 import 'package:barcelona_bus_transit/widgets/appbar.dart';
 import 'package:barcelona_bus_transit/widgets/bus_line_list.dart';
+import 'package:barcelona_bus_transit/widgets/loading.dart';
 import 'package:flutter/material.dart';
 
 class LinesListScreen extends StatelessWidget {
@@ -27,11 +28,7 @@ class LinesListScreen extends StatelessWidget {
           return ErrorWidget(snapshot.error.toString());
         }
         if (!snapshot.hasData) {
-          return const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
+         return const Loading();
         }
         return LinesTileBuilder(linesList: snapshot.data!);
       },

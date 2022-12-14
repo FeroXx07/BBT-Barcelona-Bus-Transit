@@ -151,7 +151,7 @@ class _StopTile extends StatelessWidget {
                 color: myColor5,
                 child: Text(
                   busStop.connections[index].name,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: myColor4,
                   ),
                 ),

@@ -13,10 +13,13 @@ class BusStop {
       description; //Descripción de la parada, en relación con su localización -- string : Pl. Espanya/Gran Via C.Catalanes
   String
       adress; //Dirección en la que se encuentra -- string : Av. Tibidabo, 38-40
+  String colorRectangle; //Color (formato RGB hexadecimal) -- string :ED8E8C
+  String origin;
+  String destination;
   int order; //Orden dentro del recorrido de la línea -- number : 12
   int isOrigin; //Indica si la parada es el origen de la línea -- number : 0
   int isDestionation; //Indica si la parada es el destino de la línea -- number : 1
-  String colorRectangle; //Color (formato RGB hexadecimal) -- string :ED8E8C
+  int direction; // 1 es anada, 2 es tornada
 
   List<StopConnections> connections = [];
   bool isFavorite = false;
@@ -30,6 +33,9 @@ class BusStop {
     required this.isOrigin,
     required this.isDestionation,
     required this.colorRectangle,
+    required this.direction,
+    required this.origin,
+    required this.destination,
   });
 
   BusStop.fromJson(Map<String, dynamic> json)
@@ -41,7 +47,10 @@ class BusStop {
         order = json["properties"]["ORDRE"],
         isOrigin = json["properties"]["ES_ORIGEN"],
         isDestionation = json["properties"]["ES_DESTI"],
-        colorRectangle = "#${json["properties"]["COLOR_REC"]}";
+        origin = json["properties"]["ORIGEN_SENTIT"],
+        destination = json["properties"]["DESTI_SENTIT"],
+        colorRectangle = "#${json["properties"]["COLOR_REC"]}",
+        direction = json["properties"]["ID_SENTIT"];
 
   BusStop.fromFireStore(Map<String, dynamic> json)
       : uniqueId = json["uniqueId"],
@@ -52,7 +61,10 @@ class BusStop {
         order = json["order"],
         isOrigin = json["isOrigin"],
         isDestionation = json["isDestionation"],
-        colorRectangle = "#${json["colorRectangle"]}";
+        origin = json["properties"]["ORIGEN_SENTIT"],
+        destination = json["properties"]["DESTI_SENTIT"],
+        colorRectangle = "#${json["colorRectangle"]}",
+        direction = json["direction"];
 
   Map<String, dynamic> toFirestore() => {
         'uniqueId': uniqueId,
@@ -63,7 +75,10 @@ class BusStop {
         'order': order,
         'isOrigin': isOrigin,
         'isDestionation': isDestionation,
+        'origin': origin,
+        'destination': destination,
         'colorRectangle': colorRectangle,
+        'direction': direction,
         'lastUpdate': Timestamp.now(),
       };
 

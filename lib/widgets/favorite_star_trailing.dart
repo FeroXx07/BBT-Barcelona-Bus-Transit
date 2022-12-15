@@ -16,7 +16,6 @@ class IsFavoriteStar extends StatefulWidget {
 
 class _IsFavoriteStarState extends State<IsFavoriteStar> {
   @override
-  @override
   void didChangeDependencies() {
     setState(() {
       _isFavorite = widget.isFavorite;

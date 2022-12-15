@@ -24,12 +24,11 @@ class LineTile extends StatelessWidget {
         leading: CircleIcon(busLine: busLine),
         title: Text(busLine.description),
         trailing: IsFavoriteStar(
-            isFavorite: false,
+            isFavorite: busLine.isFavorite,
             onFavoritePressed: (output) {
               if (output == true) {
                 setFavoriteBusLine(busLine);
-              }
-              else{
+              } else {
                 removeFavoriteBusLine(busLine);
               }
             }),

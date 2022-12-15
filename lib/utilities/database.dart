@@ -27,6 +27,18 @@ Future<void> removeFavoriteBusLine(BusLine busLine) async {
   busLineCollection.doc(busLine.uniqueId).delete();
 }
 
+Stream<List<BusLine>> getFavoriteBusLines() {
+  // Get firestore instance and the path where to manage data
+  final FirebaseFirestore db = FirebaseFirestore.instance;
+  final CollectionReference busLineCollection =
+      db.collection("Users").doc(userId).collection("BusLines");
+
+  return busLineCollection
+      .get()
+      .then((querySnapshot) => toBusLineList(querySnapshot))
+      .asStream();
+}
+
 Future<void> setFavoriteBusStop(BusStop busStop) async {
   // Get firestore instance and the path where to manage data
   final FirebaseFirestore db = FirebaseFirestore.instance;

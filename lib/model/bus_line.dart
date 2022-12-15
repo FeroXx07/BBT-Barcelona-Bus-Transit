@@ -23,6 +23,7 @@ class BusLine {
       secondaryColor; //Color secundario de la línea (formato RGB hexadecimal) -- string :ED8E8C
   String
       textColor; //Color por el texto de la línea (formato RGB hexadecimal) -- string :FFFFFF
+  bool isFavorite = false;
 
   BusLine({
     required this.uniqueId,
@@ -49,17 +50,17 @@ class BusLine {
         secondaryColor = "#${json["properties"]["COLOR_AUX_LINIA"]}",
         textColor = "#${json["properties"]["COLOR_TEXT_LINIA"]}";
 
-  BusLine.fromFireStore(Map<String, dynamic> json)
-      : uniqueId = json["uniqueId"],
-        code = json["code"],
-        name = json["name"],
-        description = json["description"],
-        origin = json["origin"],
-        destination = json["destination"],
-        descriptionCalendarType = json["descriptionCalendarType"],
-        primaryColor = "#${json["primaryColor"]}",
-        secondaryColor = "#${json["secondaryColor"]}",
-        textColor = "#${json["textColor"]}";
+  BusLine.fromFireStore(DocumentSnapshot doc)
+      : uniqueId = doc.get("uniqueId"),
+        code = doc.get("code"),
+        name = doc.get("name"),
+        description = doc.get("description"),
+        origin = doc.get("origin"),
+        destination = doc.get("destination"),
+        descriptionCalendarType = doc.get("descriptionCalendarType"),
+        primaryColor = "#${doc.get("primaryColor")}",
+        secondaryColor = "#${doc.get("secondaryColor")}",
+        textColor = "#${doc.get("textColor")}";
 
   Map<String, dynamic> toFireStore() => {
         'uniqueId': uniqueId,
@@ -102,4 +103,10 @@ Future<BusLine> getBusLine(int code) async {
   var busLine = BusLine.fromJson(busInfo["features"][0]);
 
   return busLine;
+}
+
+List<BusLine> toBusLineList(QuerySnapshot query) {
+  final doc = query.docs;
+  List<BusLine> list = doc.map((e) => BusLine.fromFireStore(e)).toList();
+  return list;
 }

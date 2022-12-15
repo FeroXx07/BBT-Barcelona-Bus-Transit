@@ -4,30 +4,46 @@ import 'dart:developer' as developer;
 
 class IsFavoriteStar extends StatefulWidget {
   final void Function(bool) onFavoritePressed;
-  const IsFavoriteStar({
-    Key? key,
-    required isFavorite,
+  final bool isFavorite;
+  const IsFavoriteStar({super.key, 
     required this.onFavoritePressed,
-  }) : super(key: key);
+    required this.isFavorite,
+  });
 
   @override
   State<IsFavoriteStar> createState() => _IsFavoriteStarState();
 }
 
 class _IsFavoriteStarState extends State<IsFavoriteStar> {
-  bool isFavorite = false;
+  @override
+  @override
+  void didChangeDependencies() {
+    setState(() {
+      _isFavorite = widget.isFavorite;
+    });
+    super.didChangeDependencies();
+  }
 
+  @override
+  void didUpdateWidget(covariant IsFavoriteStar oldWidget) {
+    setState(() {
+      _isFavorite = widget.isFavorite;
+    });
+    super.didUpdateWidget(oldWidget);
+  }
+
+  bool _isFavorite = false;
   @override
   Widget build(BuildContext context) {
     return IconButton(
         onPressed: () {
           setState(() {
-            isFavorite = !isFavorite;
-            developer.log("changing state to ${isFavorite.toString()}}");
-            widget.onFavoritePressed(isFavorite);
+            _isFavorite = !_isFavorite;
+            developer.log("changing state to ${_isFavorite.toString()}}");
+            widget.onFavoritePressed(_isFavorite);
           });
         },
-        icon: isFavorite
+        icon: _isFavorite
             ? const StarIcon(state: true)
             : const StarIcon(state: false));
   }

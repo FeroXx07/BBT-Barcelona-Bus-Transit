@@ -19,7 +19,7 @@ class BusStop {
   String colorRectangle; //Color (formato RGB hexadecimal) -- string :ED8E8C
 
   List<StopConnections> connections = [];
-
+  bool isFavorite = false;
   BusStop({
     required this.uniqueId,
     required this.code,

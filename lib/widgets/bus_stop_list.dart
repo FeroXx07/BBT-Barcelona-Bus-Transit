@@ -26,7 +26,7 @@ class _StopsListBuilderState extends State<StopsListBuilder> {
     return Scaffold(
       body: Column(
         children: [
-          Direction(
+          DirectionWidget(
             origin: widget.stopsList[0].origin,
             destionation: widget.stopsList[0].destination,
             onDirectionPressed: (output) {
@@ -100,12 +100,12 @@ class _StopsListBuilderState extends State<StopsListBuilder> {
   }
 }
 
-class Direction extends StatefulWidget {
+class DirectionWidget extends StatefulWidget {
   final String origin;
   final String destionation;
   final int direction = 1;
   final void Function(int) onDirectionPressed;
-  const Direction({
+  const DirectionWidget({
     Key? key,
     required this.origin,
     required this.destionation,
@@ -113,61 +113,45 @@ class Direction extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<Direction> createState() => _DirectionState();
+  State<DirectionWidget> createState() => _DirectionWidgetState();
 }
 
-class _DirectionState extends State<Direction> {
+class _DirectionWidgetState extends State<DirectionWidget> {
   int _direction = 1;
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Expanded(
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
-            decoration: BoxDecoration(
-              color: _direction == 1 ? myColor2 : myColor3,
-            ),
-            child: InkWell(
-              onTap: () {
-                setState(() {
-                  _direction = 1;
-                  widget.onDirectionPressed(_direction);
-                });
-              },
-              child: Expanded(
-                child: AutoSizeText(
-                  style: const TextStyle(fontSize: 12, color: myColor4),
-                  "From: ${widget.origin} \n To: ${widget.destionation}",
-                ),
-              ),
-            ),
-          ),
-        ),
-        Expanded(
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
-            decoration: BoxDecoration(
-              color: _direction == 2 ? myColor2 : myColor3,
-            ),
-            child: InkWell(
-              onTap: () {
-                setState(() {
-                  _direction = 2;
-                  widget.onDirectionPressed(_direction);
-                });
-              },
-              child: Expanded(
-                child: AutoSizeText(
-                  style: const TextStyle(fontSize: 12, color: myColor4),
-                  "From: ${widget.destionation} \n To: ${widget.origin}",
-                ),
-              ),
-            ),
-          ),
-        ),
+        directionBox(widget.origin, widget.destionation, myColor2, myColor3, 1),
+        directionBox(widget.destionation, widget.origin, myColor2, myColor3, 2),
       ],
+    );
+  }
+
+  Expanded directionBox(String origin, String dest, Color enabledColor,
+      Color disabledColor, final int dir) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
+        decoration: BoxDecoration(
+          color: _direction == dir ? enabledColor : disabledColor,
+        ),
+        child: InkWell(
+          onTap: () {
+            setState(() {
+              _direction = dir;
+              widget.onDirectionPressed(_direction);
+            });
+          },
+          child: Expanded(
+            child: AutoSizeText(
+              style: const TextStyle(fontSize: 12, color: myColor4),
+              "From: $origin \n To: $dest",
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

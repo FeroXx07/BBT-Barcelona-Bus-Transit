@@ -58,14 +58,20 @@ class Connection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: hexToColor(busStop.connections[index].colorRect),
-      child: Center(
-        child: Text(
-          busStop.connections[index].name,
-          style: TextStyle(
-            fontSize: 8,
-            color: hexToColor(busStop.connections[index].colorText),
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).pushNamed('/stopsList',
+            arguments: busStop.connections[index].lineCode);
+      },
+      child: Card(
+        color: hexToColor(busStop.connections[index].colorRect),
+        child: Center(
+          child: Text(
+            busStop.connections[index].name,
+            style: TextStyle(
+              fontSize: 8,
+              color: hexToColor(busStop.connections[index].colorText),
+            ),
           ),
         ),
       ),

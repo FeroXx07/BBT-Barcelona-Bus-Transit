@@ -1,3 +1,4 @@
+import 'package:barcelona_bus_transit/screens/buses_favorite_list_screen.dart';
 import 'package:barcelona_bus_transit/screens/buses_lines_list_screen.dart';
 import 'package:barcelona_bus_transit/screens/buses_stops_list_screen.dart';
 import 'package:barcelona_bus_transit/utilities/hex_color.dart';
@@ -21,13 +22,14 @@ class BarcelonaBusTransitApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData( 
+      theme: ThemeData(
         appBarTheme: const AppBarTheme(backgroundColor: myColor1),
       ),
       initialRoute: '/busesList',
       routes: {
         '/busesList': (context) => const LinesListScreen(),
-        '/stopsList':(context) => const StopsListScreen(),
+        '/stopsList': (context) => const StopsListScreen(),
+        '/favoriteList': (context) => const FavoritesListScreen(),
       },
     );
   }

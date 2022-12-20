@@ -132,24 +132,19 @@ class _DirectionWidgetState extends State<DirectionWidget> {
   Expanded directionBox(String origin, String dest, Color enabledColor,
       Color disabledColor, final int dir) {
     return Expanded(
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
-        decoration: BoxDecoration(
-          color: _direction == dir ? enabledColor : disabledColor,
-        ),
-        child: InkWell(
-          onTap: () {
-            setState(() {
-              _direction = dir;
-              widget.onDirectionPressed(_direction);
-            });
-          },
-          child: Expanded(
-            child: AutoSizeText(
-              style: const TextStyle(fontSize: 12, color: myColor4),
-              "From: $origin \n To: $dest",
-            ),
-          ),
+      child: ListTile(
+        onTap: () {
+          setState(() {
+            _direction = dir;
+            widget.onDirectionPressed(_direction);
+          });
+        },
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
+        tileColor: _direction == dir ? enabledColor : disabledColor,
+        title: AutoSizeText(
+          style: const TextStyle(fontSize: 12, color: myColor4),
+          "From: $origin \n To: $dest",
         ),
       ),
     );

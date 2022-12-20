@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 class CustomAppbar extends StatelessWidget {
   final String title;
   const CustomAppbar({
-    Key? key, required this.title,
+    Key? key,
+    required this.title,
   }) : super(key: key);
 
   @override
@@ -25,7 +26,9 @@ class CustomAppbar extends StatelessWidget {
       ),
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushNamed('/favoriteList');
+          },
           icon: const Icon(Icons.person),
           iconSize: 50,
           color: myColor4,

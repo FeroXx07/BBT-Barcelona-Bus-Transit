@@ -58,9 +58,10 @@ class BusLine {
         origin = doc.get("origin"),
         destination = doc.get("destination"),
         descriptionCalendarType = doc.get("descriptionCalendarType"),
-        primaryColor = "#${doc.get("primaryColor")}",
-        secondaryColor = "#${doc.get("secondaryColor")}",
-        textColor = "#${doc.get("textColor")}";
+        primaryColor = doc.get("primaryColor"),
+        secondaryColor = doc.get("secondaryColor"),
+        textColor = doc.get("textColor"),
+        isFavorite = doc.get("isFavorite");
 
   Map<String, dynamic> toFireStore() => {
         'uniqueId': uniqueId,
@@ -73,6 +74,7 @@ class BusLine {
         'primaryColor': primaryColor,
         'secondaryColor': secondaryColor,
         'textColor': textColor,
+        'isFavorite': isFavorite,
         'lastUpdate': Timestamp.now(),
       };
 }

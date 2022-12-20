@@ -24,7 +24,7 @@ class _FavoriteSelectionsWidgetState extends State<FavoriteSelectionsWidget> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         selectionBox("Lines", myColor2, myColor3, 1),
-        selectionBox("Favorites", myColor2, myColor3, 2),
+        selectionBox("Favorites", myColor2, myColor3, 0),
       ],
     );
   }

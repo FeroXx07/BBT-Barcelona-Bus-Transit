@@ -5,6 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 const String userId = "CM0Rrrc4JF6xH0D40i77"; // Hardcoded for this version
 
 Future<void> setFavoriteBusLine(BusLine busLine) async {
+  busLine.isFavorite = true;
+
   // Get firestore instance and the path where to manage data
   final FirebaseFirestore db = FirebaseFirestore.instance;
   final CollectionReference busLineCollection =
@@ -18,6 +20,8 @@ Future<void> setFavoriteBusLine(BusLine busLine) async {
 }
 
 Future<void> removeFavoriteBusLine(BusLine busLine) async {
+   busLine.isFavorite = false;
+   
   // Get firestore instance and the path where to manage data
   final FirebaseFirestore db = FirebaseFirestore.instance;
   final CollectionReference busLineCollection =

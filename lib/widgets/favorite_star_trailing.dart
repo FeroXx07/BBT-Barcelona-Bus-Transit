@@ -31,6 +31,7 @@ class _IsFavoriteStarState extends State<IsFavoriteStar> {
     super.didUpdateWidget(oldWidget);
   }
 
+
   bool _isFavorite = false;
   @override
   Widget build(BuildContext context) {

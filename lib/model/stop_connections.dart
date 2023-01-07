@@ -1,6 +1,6 @@
 
 
-class StopConnections {
+class StopConnection {
   int stopCode;
   int lineCode;
   String name;
@@ -8,7 +8,7 @@ class StopConnections {
   String colorText;
   String colorRect;
 
-  StopConnections({
+  StopConnection({
     required this.stopCode,
     required this.lineCode,
     required this.name,
@@ -17,7 +17,7 @@ class StopConnections {
     required this.colorRect,
   });
 
-  StopConnections.fromJson(Map<String, dynamic> json)
+  StopConnection.fromJson(Map<String, dynamic> json)
       : stopCode = json["properties"]["CODI_PARADA"],
         lineCode = json["properties"]["CODI_LINIA"],
         name = json["properties"]["NOM_LINIA"],

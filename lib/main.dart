@@ -1,5 +1,6 @@
 import 'package:barcelona_bus_transit/screens/favorite_list_screen.dart';
 import 'package:barcelona_bus_transit/screens/lines_list_screen.dart';
+import 'package:barcelona_bus_transit/screens/stop_timings_list_screen.dart';
 import 'package:barcelona_bus_transit/screens/stops_list_screen.dart';
 import 'package:barcelona_bus_transit/utilities/hex_color.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,7 @@ class BarcelonaBusTransitApp extends StatelessWidget {
         '/busesList': (context) => const LinesListScreen(),
         '/stopsList': (context) => const StopsListScreen(),
         '/favoriteList': (context) => const FavoritesListScreen(),
+        "/stopScreen": ((context) => const StopTimingsListScreen())
       },
     );
   }

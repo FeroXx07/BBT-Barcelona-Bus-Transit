@@ -17,6 +17,10 @@ class StopTile extends StatelessWidget {
           StepperRect(rectColor: rectColor),
         ],
       ),
+      onTap: () {
+        Navigator.of(context).pushNamed('/stopScreen',
+            arguments: busStop);
+      },
       trailing: SizedBox(
         width: 100,
         height: 60,

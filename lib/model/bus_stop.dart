@@ -21,7 +21,7 @@ class BusStop {
   int isDestionation; //Indica si la parada es el destino de la línea -- number : 1
   int direction; // 1 es anada, 2 es tornada
 
-  List<StopConnections> connections = [];
+  List<StopConnection> connections = [];
   bool isFavorite = false;
   BusStop({
     required this.uniqueId,
@@ -87,17 +87,17 @@ class BusStop {
   }
 }
 
-Future<List<StopConnections>> connectionsStopFromCode(int stopCode) async {
+Future<List<StopConnection>> connectionsStopFromCode(int stopCode) async {
   String url = "https://api.tmb.cat/v1/transit/parades/$stopCode/corresp?";
   url = url + getApiString();
   final uri = Uri.parse(url);
   final response = await http.get(uri);
   final json = jsonDecode(response.body);
   final jSonBusesLineList = json["features"];
-  List<StopConnections> list = [];
+  List<StopConnection> list = [];
   for (final jSonBusLine in jSonBusesLineList) {
     // Check for only buses in the json, then add the buses only
-    StopConnections b = StopConnections.fromJson(jSonBusLine);
+    StopConnection b = StopConnection.fromJson(jSonBusLine);
     if (jSonBusLine["properties"]["NOM_OPERADOR"] == "TB") {
       list.add(b);
     }

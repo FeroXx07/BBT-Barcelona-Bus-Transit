@@ -1,12 +1,20 @@
 // Each individual stop tile
+import 'package:barcelona_bus_transit/model/bus_line.dart';
 import 'package:barcelona_bus_transit/model/bus_stop.dart';
+import 'package:barcelona_bus_transit/utilities/bus_line_stop_args.dart';
 import 'package:barcelona_bus_transit/utilities/hex_color.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class StopTile extends StatelessWidget {
+  final BusLine busLine;
   final BusStop busStop;
   final Color rectColor;
-  const StopTile({super.key, required this.busStop, required this.rectColor});
+  const StopTile(
+      {super.key,
+      required this.busStop,
+      required this.rectColor,
+      required this.busLine});
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +26,12 @@ class StopTile extends StatelessWidget {
         ],
       ),
       onTap: () {
-        Navigator.of(context).pushNamed('/stopScreen',
-            arguments: busStop);
+        //Navigator.of(context).pushNamed('/stopScreen', arguments: busStop);
+        Navigator.of(context).pushNamed(
+          '/stopScreen',
+          arguments: BusLineStopArguments(context.read<List<BusStop>>(),
+              busLine: busLine, busStop: busStop),
+        );
       },
       trailing: SizedBox(
         width: 100,
@@ -39,13 +51,11 @@ class StopTile extends StatelessWidget {
           }),
         ),
       ),
-
       title: Text(
         busStop.name,
         style: const TextStyle(fontSize: 11),
       ),
-
-      //subtitle: Text(busStop.adress),
+      //subtitle: Text("${busStop.code}"),
     );
   }
 }

@@ -31,7 +31,7 @@ class BarcelonaBusTransitApp extends StatelessWidget {
         '/busesList': (context) => const LinesListScreen(),
         '/stopsList': (context) => const StopsListScreen(),
         '/favoriteList': (context) => const FavoritesListScreen(),
-        "/stopScreen": ((context) => const StopTimingsListScreen())
+        "/stopScreen": ((context) => StopTimingsListScreen())
       },
     );
   }

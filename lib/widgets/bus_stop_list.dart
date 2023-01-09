@@ -23,47 +23,51 @@ class _StopsListBuilderState extends State<StopsListBuilder> {
   int _direction = 1;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          DirectionWidget(
-            origin: widget.stopsList[0].origin,
-            destionation: widget.stopsList[0].destination,
-            onDirectionPressed: (output) {
-              setState(() {
-                _direction = output;
-              });
-            },
-          ),
-          Expanded(
-            child: Container(
-              color: myColor4,
-              padding: const EdgeInsets.all(30),
-              child: Expanded(
-                child: FutureBuilder(
-                  // Pass the line code from the provider
-                  future: getBusLine(context.watch<int>()),
-                  builder: ((context, snapshot) {
-                    if (snapshot.hasError) {
-                      return ErrorWidget(snapshot.error.toString());
-                    }
-                    if (!snapshot.hasData) {
-                      return const Loading();
-                    }
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        lineTitle(snapshot),
-                        lineStopsListViewBuilder(snapshot),
-                      ],
-                    );
-                  }),
+    return Provider(
+      
+      create: (_) => widget.stopsList,
+      child: Scaffold(
+        body: Column(
+          children: [
+            DirectionWidget(
+              origin: widget.stopsList[0].origin,
+              destionation: widget.stopsList[0].destination,
+              onDirectionPressed: (output) {
+                setState(() {
+                  _direction = output;
+                });
+              },
+            ),
+            Expanded(
+              child: Container(
+                color: myColor4,
+                padding: const EdgeInsets.all(30),
+                child: Expanded(
+                  child: FutureBuilder(
+                    // Pass the line code from the provider
+                    future: getBusLine(context.watch<int>()),
+                    builder: ((context, snapshot) {
+                      if (snapshot.hasError) {
+                        return ErrorWidget(snapshot.error.toString());
+                      }
+                      if (!snapshot.hasData) {
+                        return const Loading();
+                      }
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          lineTitle(snapshot),
+                          lineStopsListViewBuilder(snapshot),
+                        ],
+                      );
+                    }),
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -75,6 +79,7 @@ class _StopsListBuilderState extends State<StopsListBuilder> {
         itemBuilder: ((context, index) {
           if (widget.stopsList[index].direction == _direction) {
             return StopTile(
+              busLine: snapshot.data!,
               busStop: widget.stopsList[index],
               rectColor: hexToColor(snapshot.data!.primaryColor),
             );

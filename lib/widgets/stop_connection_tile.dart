@@ -6,7 +6,6 @@ import 'package:barcelona_bus_transit/model/stop_connections.dart';
 import 'package:barcelona_bus_transit/model/stop_timings.dart';
 import 'package:barcelona_bus_transit/widgets/icons/circle_icon.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as developer;
 
 class StopConnectionTile extends StatefulWidget {
   final BusStop busStop;
@@ -46,22 +45,19 @@ class _StopConnectionTileState extends State<StopConnectionTile> {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
             case ConnectionState.waiting:
-              return const CircularProgressIndicator();
+              return Text(destination);
             case ConnectionState.active:
               {
-                Map<String, dynamic> busInfo =
-                    jsonDecode(snapshot.data!.body);
+                Map<String, dynamic> busInfo = jsonDecode(snapshot.data!.body);
                 var stop = StopTiming.fromJson(busInfo["features"][0]);
                 destination = stop.destination;
                 time = stop.timeInString;
-                return const CircularProgressIndicator();
+                return Text(destination);
               }
             case ConnectionState.done:
               break;
             default:
-          }
-          if (!snapshot.hasData) {
-            return const CircularProgressIndicator();
+              return Text(destination);
           }
           return Text(destination);
         },

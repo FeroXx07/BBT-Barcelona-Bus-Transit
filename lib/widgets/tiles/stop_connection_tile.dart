@@ -7,9 +7,10 @@ import 'package:barcelona_bus_transit/model/stop_connections.dart';
 import 'package:barcelona_bus_transit/model/stop_timings.dart';
 import 'package:barcelona_bus_transit/widgets/icons/circle_icon.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as developer;
+// ignore: implementation_imports
 import 'package:http/src/response.dart';
 
+//ignore: must_be_immutable
 class StopConnectionTile extends StatefulWidget {
   final BusStop busStop;
   final StopConnection connection;
@@ -29,43 +30,36 @@ class _StopConnectionTileState extends State<StopConnectionTile> {
 
   @override
   void didChangeDependencies() {
-    _streamController = StreamController<String>(
-      onPause: () => developer.log('Paused'),
-      onResume: () => developer.log('Resumed'),
-      onCancel: () => developer.log('Cancelled'),
-      onListen: () => developer.log('Listens'),
-    );
+    _streamController = StreamController<String>();
     super.didChangeDependencies();
   }
 
   @override
   void didUpdateWidget(covariant StopConnectionTile oldWidget) {
-    _streamController = StreamController<String>(
-      onPause: () => developer.log('Paused'),
-      onResume: () => developer.log('Resumed'),
-      onCancel: () => developer.log('Cancelled'),
-      onListen: () => developer.log('Listens'),
-    );
+    _streamController = StreamController<String>();
     super.didUpdateWidget(oldWidget);
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: FutureBuilder(
-        future: getBusLine(widget.connection.lineCode),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return ErrorWidget(snapshot.error.toString());
-          }
-          if (!snapshot.hasData) {
-            return const CircularProgressIndicator();
-          }
-          return CircleIcon(busLine: snapshot.data!);
-        },
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: ListTile(
+        leading: FutureBuilder(
+          future: getBusLine(widget.connection.lineCode),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return ErrorWidget(snapshot.error.toString());
+            }
+            if (!snapshot.hasData) {
+              return const CircularProgressIndicator();
+            }
+            return CircleIcon(busLine: snapshot.data!);
+          },
+        ),
+        trailing: _timeStreamBuilderSubscriber(),
+        title: _mainStreamBuilder(),
       ),
-      trailing: _timeStreamBuilderSubscriber(),
-      title: _mainStreamBuilder(),
     );
   }
 
@@ -83,6 +77,7 @@ class _StopConnectionTileState extends State<StopConnectionTile> {
           case ConnectionState.active:
             {
               Map<String, dynamic> busInfo = jsonDecode(snapshot.data!.body);
+
               final timeData = busInfo["data"]["ibus"];
               StopTiming stopTiming;
 
@@ -92,7 +87,8 @@ class _StopConnectionTileState extends State<StopConnectionTile> {
               } else {
                 stopTiming = StopTiming.fromJsonOpened(timeData[0]);
               }
-              _sendStreamToSubscribers(stopTiming.destination, stopTiming.timeInString);
+              _sendStreamToSubscribers(
+                  stopTiming.destination, stopTiming.timeInString);
 
               return Text(widget.destination);
             }

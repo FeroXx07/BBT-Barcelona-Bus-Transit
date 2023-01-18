@@ -5,6 +5,7 @@ import 'package:barcelona_bus_transit/widgets/appbar.dart';
 import 'package:barcelona_bus_transit/widgets/tiles/stop_connection_tile.dart';
 import 'package:flutter/material.dart';
 
+//ignore: must_be_immutable
 class StopTimingsListScreen extends StatelessWidget {
   late BusStop previousBusStop;
   late BusStop nextBusStop;
@@ -47,6 +48,7 @@ class StopTimingsListScreen extends StatelessWidget {
                 nextBusStop: nextBusStop),
             Expanded(
               child: ListView.builder(
+                padding: const EdgeInsets.symmetric(vertical: 30),
                 itemCount: arguments.busStop.connections.length,
                 itemBuilder: ((context, index) {
                   return StopConnectionTile(

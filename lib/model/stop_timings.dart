@@ -20,11 +20,11 @@ class StopTiming {
 
   StopTiming.fromJsonClosed()
       : status = "failure",
-        routeId = "line closed",
+        routeId = "CLOSED",
         timeInMin = 0,
         timeInSeconds = 0,
-        timeInString = "no time, line closed",
-        destination = "no destination, line closed";
+        timeInString = "CLOSED",
+        destination = "CLOSED";
 
   StopTiming.fromJsonOpened(Map<String, dynamic> json)
       : status = "success",
@@ -49,11 +49,21 @@ class StopTiming {
 
 Stream<http.Response> getTimeConnection(StopConnection connection) async* {
   yield* Stream.periodic(const Duration(seconds: 5), (_) {
+    String urlCode = checkExceptions(connection.name);
     String url =
-        "https://api.tmb.cat/v1/ibus/lines/${connection.name}/stops/${connection.stopCode}?";
+        "https://api.tmb.cat/v1/ibus/lines/$urlCode/stops/${connection.stopCode}?";
     url = url + getApiString();
     final uri = Uri.parse(url);
 
     return http.get(uri);
   }).asyncMap((event) async => await event);
+}
+
+Map<String, String> exceptionsList = {"X1": "242"};
+String checkExceptions(String initialCode) {
+  String code = initialCode.toString();
+  if (exceptionsList.containsKey(code)) {
+    return exceptionsList[code] as String;
+  }
+  return initialCode;
 }

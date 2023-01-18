@@ -1,8 +1,8 @@
 import 'package:barcelona_bus_transit/model/bus_stop.dart';
-import 'package:barcelona_bus_transit/utilities/bus_line_stop_args.dart';
+import 'package:barcelona_bus_transit/model/bus_line_stop_args.dart';
 import 'package:barcelona_bus_transit/utilities/hex_color.dart';
 import 'package:barcelona_bus_transit/widgets/appbar.dart';
-import 'package:barcelona_bus_transit/widgets/stop_connection_tile.dart';
+import 'package:barcelona_bus_transit/widgets/tiles/stop_connection_tile.dart';
 import 'package:flutter/material.dart';
 
 class StopTimingsListScreen extends StatelessWidget {
@@ -148,10 +148,10 @@ class _Circle extends StatelessWidget {
         ),
         Container(
           width: width,
-          padding: EdgeInsets.all(2),
+          padding: const EdgeInsets.all(2),
           child: Text(
             busStop.name,
-            style: TextStyle(fontSize: 10),
+            style: const TextStyle(fontSize: 10),
           ),
         ),
       ],

@@ -1,7 +1,7 @@
 import 'package:barcelona_bus_transit/model/bus_line.dart';
 import 'package:barcelona_bus_transit/model/bus_stop.dart';
 import 'package:barcelona_bus_transit/utilities/hex_color.dart';
-import 'package:barcelona_bus_transit/widgets/bus_stop_tile.dart';
+import 'package:barcelona_bus_transit/widgets/tiles/bus_stop_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

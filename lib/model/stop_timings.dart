@@ -18,13 +18,21 @@ class StopTiming {
       required this.timeInString,
       required this.destination});
 
-  StopTiming.fromJson(Map<String, dynamic> json)
-      : status = json["status"],
-        routeId = json["data"]["data"]["routeId"],
-        timeInMin = json["data"]["data"]["t-in-min"],
-        timeInSeconds = json["data"]["data"]["t-in-s"],
-        timeInString = json["data"]["data"]["text-ca"],
-        destination = json["data"]["data"]["destination"];
+  StopTiming.fromJsonClosed()
+      : status = "failure",
+        routeId = "line closed",
+        timeInMin = 0,
+        timeInSeconds = 0,
+        timeInString = "no time, line closed",
+        destination = "no destination, line closed";
+
+  StopTiming.fromJsonOpened(Map<String, dynamic> json)
+      : status = "success",
+        routeId = json["routeId"],
+        timeInMin = json["t-in-min"],
+        timeInSeconds = json["t-in-s"],
+        timeInString = json["text-ca"],
+        destination = json["destination"];
 }
 
 // Stream<StopTiming> getTimingsConnection(StopConnection connection) {
@@ -42,7 +50,7 @@ class StopTiming {
 Stream<http.Response> getTimeConnection(StopConnection connection) async* {
   yield* Stream.periodic(const Duration(seconds: 5), (_) {
     String url =
-        "https://api.tmb.cat/v1/ibus/lines/${connection.lineCode}/stops/${connection.stopCode}?";
+        "https://api.tmb.cat/v1/ibus/lines/${connection.name}/stops/${connection.stopCode}?";
     url = url + getApiString();
     final uri = Uri.parse(url);
 

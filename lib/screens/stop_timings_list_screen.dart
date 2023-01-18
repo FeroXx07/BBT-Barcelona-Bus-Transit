@@ -139,7 +139,7 @@ class _Circle extends StatelessWidget {
           ),
           child: Center(
             child: Text(
-              "${busStop.order}",
+              "${busStop.code}",
               style: const TextStyle(
                 color: Colors.white,
               ),

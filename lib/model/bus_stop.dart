@@ -20,6 +20,8 @@ class BusStop {
   int isOrigin; //Indica si la parada es el origen de la línea -- number : 0
   int isDestionation; //Indica si la parada es el destino de la línea -- number : 1
   int direction; // 1 es anada, 2 es tornada
+  double latitud;
+  double longitud;
 
   List<StopConnection> connections = [];
   bool isFavorite = false;
@@ -36,6 +38,8 @@ class BusStop {
     required this.direction,
     required this.origin,
     required this.destination,
+    required this.latitud,
+    required this.longitud,
   });
 
   BusStop.fromJson(Map<String, dynamic> json)
@@ -50,7 +54,9 @@ class BusStop {
         origin = json["properties"]["ORIGEN_SENTIT"],
         destination = json["properties"]["DESTI_SENTIT"],
         colorRectangle = "#${json["properties"]["COLOR_REC"]}",
-        direction = json["properties"]["ID_SENTIT"];
+        direction = json["properties"]["ID_SENTIT"],
+        latitud = json["geometry"]["coordinates"][1],
+        longitud = json["geometry"]["coordinates"][0];
 
   BusStop.fromFireStore(Map<String, dynamic> json)
       : uniqueId = json["uniqueId"],
@@ -64,7 +70,9 @@ class BusStop {
         origin = json["properties"]["ORIGEN_SENTIT"],
         destination = json["properties"]["DESTI_SENTIT"],
         colorRectangle = "#${json["colorRectangle"]}",
-        direction = json["direction"];
+        direction = json["direction"],
+        latitud = json["latitud"],
+        longitud = json["longitud"];
 
   Map<String, dynamic> toFirestore() => {
         'uniqueId': uniqueId,
@@ -79,6 +87,8 @@ class BusStop {
         'destination': destination,
         'colorRectangle': colorRectangle,
         'direction': direction,
+        'latitud': latitud,
+        'longitud': longitud,
         'lastUpdate': Timestamp.now(),
       };
 

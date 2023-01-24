@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:barcelona_bus_transit/model/bus_line_stop_args.dart';
 import 'package:barcelona_bus_transit/model/stop_connections.dart';
 import 'package:barcelona_bus_transit/utilities/tmb_api.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -58,21 +59,21 @@ class BusStop {
         latitud = json["geometry"]["coordinates"][1],
         longitud = json["geometry"]["coordinates"][0];
 
-  BusStop.fromFireStore(Map<String, dynamic> json)
-      : uniqueId = json["uniqueId"],
-        code = json["code"],
-        name = json["name"],
-        description = json["description"],
-        adress = json["adress"],
-        order = json["order"],
-        isOrigin = json["isOrigin"],
-        isDestionation = json["isDestionation"],
-        origin = json["properties"]["ORIGEN_SENTIT"],
-        destination = json["properties"]["DESTI_SENTIT"],
-        colorRectangle = "#${json["colorRectangle"]}",
-        direction = json["direction"],
-        latitud = json["latitud"],
-        longitud = json["longitud"];
+  BusStop.fromFireStore(DocumentSnapshot doc)
+      : uniqueId = doc["uniqueId"],
+        code = doc["code"],
+        name = doc["name"],
+        description = doc["description"],
+        adress = doc["adress"],
+        order = doc["order"],
+        isOrigin = doc["isOrigin"],
+        isDestionation = doc["isDestionation"],
+        origin = doc["properties"]["ORIGEN_SENTIT"],
+        destination = doc["properties"]["DESTI_SENTIT"],
+        colorRectangle = "#${doc["colorRectangle"]}",
+        direction = doc["direction"],
+        latitud = doc["latitud"],
+        longitud = doc["longitud"];
 
   Map<String, dynamic> toFirestore() => {
         'uniqueId': uniqueId,
@@ -135,3 +136,38 @@ Future<List<BusStop>> loadAllBusesStopsFromCode(int lineCode) async {
 
   return stopsList;
 }
+
+
+List<BusStop> toBusStopList(QuerySnapshot query) {
+  final doc = query.docs;
+  List<BusStop> list = doc.map((e) => BusStop.fromFireStore(e)).toList();
+  return list;
+}
+
+  BusStop findPreviousStop(BusLineStopArguments arguments) {
+    return arguments.allStops.singleWhere(
+      (element) {
+        // First the must be in the same direction
+        if (element.direction == arguments.busStop.direction) {
+          // Secondly it must be the previous order in the line
+          return element.order == arguments.busStop.order - 1;
+        } else {
+          return false;
+        }
+      },
+    );
+  }
+
+  BusStop findNextStop(BusLineStopArguments arguments) {
+    return arguments.allStops.singleWhere(
+      (element) {
+        // First the must be in the same direction
+        if (element.direction == arguments.busStop.direction) {
+          // Secondly it must be the previous order in the line
+          return element.order == arguments.busStop.order + 1;
+        } else {
+          return false;
+        }
+      },
+    );
+  }

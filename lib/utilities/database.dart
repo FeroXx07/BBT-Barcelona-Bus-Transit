@@ -65,3 +65,15 @@ Future<void> removeFavoriteBusStop(BusStop busStop) async {
   // Delete that saved model
   busLineCollection.doc(busStop.uniqueId).delete();
 }
+
+Stream<List<BusStop>> getFavoriteBusStopes() {
+  // Get firestore instance and the path where to manage data
+  final FirebaseFirestore db = FirebaseFirestore.instance;
+  final CollectionReference busStopCollection =
+      db.collection("Users").doc(userId).collection("BusStops");
+
+  return busStopCollection
+      .get()
+      .then((querySnapshot) => toBusStopList(querySnapshot))
+      .asStream();
+}

@@ -56,7 +56,8 @@ class StopTimingsListScreen extends StatelessWidget {
                     isFavorite: arguments.busStop.isFavorite,
                     onFavoritePressed: (output) {
                       if (output == true) {
-                        setFavoriteBusStop(arguments.busStop);
+                        setFavoriteBusStop(
+                            arguments.busStop);
                       } else {
                         removeFavoriteBusStop(arguments.busStop);
                       }

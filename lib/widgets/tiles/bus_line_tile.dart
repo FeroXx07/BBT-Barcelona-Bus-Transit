@@ -21,7 +21,7 @@ class LineTile extends StatelessWidget {
         // leading: CircleAvatar(
         //   backgroundImage: NetworkImage(user.avatarUrl),
         // ),
-        leading: CircleIcon(busLine: busLine),
+        leading: CircleIconFromBusLine(busLine: busLine),
         title: Text(busLine.description),
         trailing: IsFavoriteStar(
             isFavorite: busLine.isFavorite,

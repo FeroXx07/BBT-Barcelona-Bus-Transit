@@ -1,3 +1,4 @@
+
 import 'package:barcelona_bus_transit/model/bus_line.dart';
 import 'package:barcelona_bus_transit/model/bus_stop.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -52,10 +53,14 @@ Future<void> setFavoriteBusStop(BusStop busStop) async {
       db.collection("Users").doc(userId).collection("BusStops");
 
   // Create a model for Json
-  final fireStoreModel = busStop.toFirestore();
+  var fireStoreModel = busStop.toFirestore();
+  
+  //Map<String, dynamic> extraInfo = {};
+  //extraInfo["busLineCode"] = busLine.code;
 
   // Upload that model
   busLineCollection.doc(busStop.uniqueId).set(fireStoreModel);
+  //busLineCollection.doc(busStop.uniqueId).set(extraInfo);
 }
 
 Future<void> removeFavoriteBusStop(BusStop busStop) async {

@@ -6,23 +6,26 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 
 class BusStop {
-  String uniqueId;
-  int code; //Código identificador de la parada -- number : 1775
+  late String uniqueId;
+  late int code; //Código identificador de la parada -- number : 1775
 
-  String name; //Nombre de la parada -- string : Pl Espanya
-  String
+  late String name; //Nombre de la parada -- string : Pl Espanya
+  late String
       description; //Descripción de la parada, en relación con su localización -- string : Pl. Espanya/Gran Via C.Catalanes
-  String
+  late String
       adress; //Dirección en la que se encuentra -- string : Av. Tibidabo, 38-40
-  String colorRectangle; //Color (formato RGB hexadecimal) -- string :ED8E8C
-  String origin;
-  String destination;
-  int order; //Orden dentro del recorrido de la línea -- number : 12
-  int isOrigin; //Indica si la parada es el origen de la línea -- number : 0
-  int isDestination; //Indica si la parada es el destino de la línea -- number : 1
-  int direction; // 1 es anada, 2 es tornada
-  double latitud;
-  double longitud;
+  late String
+      colorRectangle; //Color (formato RGB hexadecimal) -- string :ED8E8C
+  late String origin;
+  late String destination;
+  late int order; //Orden dentro del recorrido de la línea -- number : 12
+  late int
+      isOrigin; //Indica si la parada es el origen de la línea -- number : 0
+  late int
+      isDestination; //Indica si la parada es el destino de la línea -- number : 1
+  late int direction; // 1 es anada, 2 es tornada
+  late double latitud;
+  late double longitud;
 
   List<StopConnection> connections = [];
   bool isFavorite = false;
@@ -59,22 +62,26 @@ class BusStop {
         latitud = json["geometry"]["coordinates"][1],
         longitud = json["geometry"]["coordinates"][0];
 
-  BusStop.fromFireStore(DocumentSnapshot doc)
-      : uniqueId = doc["uniqueId"],
-        code = doc["code"],
-        name = doc["name"],
-        description = doc["description"],
-        adress = doc["adress"],
-        order = doc["order"],
-        isOrigin = doc["isOrigin"],
-        isDestination = doc["isDestination"],
-        origin = doc["origin"],
-        destination = doc["destination"],
-        colorRectangle = doc["colorRectangle"],
-        direction = doc["direction"],
-        latitud = doc["latitud"],
-        longitud = doc["longitud"],
-        isFavorite = doc["isFavorite"];
+  BusStop.fromFireStore(DocumentSnapshot doc) {
+    uniqueId = doc["uniqueId"];
+    code = doc["code"];
+    name = doc["name"];
+    description = doc["description"];
+    adress = doc["adress"];
+    order = doc["order"];
+    isOrigin = doc["isOrigin"];
+    isDestination = doc["isDestination"];
+    origin = doc["origin"];
+    destination = doc["destination"];
+    colorRectangle = doc["colorRectangle"];
+    direction = doc["direction"];
+    latitud = doc["latitud"];
+    longitud = doc["longitud"];
+    isFavorite = doc["isFavorite"];
+    connections = (doc["connections"] as List<dynamic>)
+        .map((e) => StopConnection.fromFireStoreJsonFire(e))
+        .toList();
+  }
 
   Map<String, dynamic> toFirestore() => {
         'uniqueId': uniqueId,
@@ -92,6 +99,8 @@ class BusStop {
         'latitud': latitud,
         'longitud': longitud,
         'isFavorite': isFavorite,
+        'connections':
+            List<StopConnection>.from(connections.map((x) => x.toFireStore())),
         'lastUpdate': Timestamp.now(),
       };
 
@@ -110,7 +119,7 @@ Future<List<StopConnection>> connectionsStopFromCode(int stopCode) async {
   List<StopConnection> list = [];
   for (final jSonBusLine in jSonBusesLineList) {
     // Check for only buses in the json, then add the buses only
-    StopConnection b = StopConnection.fromJson(jSonBusLine);
+    StopConnection b = StopConnection.fromJsonAPI(jSonBusLine);
     if (jSonBusLine["properties"]["NOM_OPERADOR"] == "TB") {
       list.add(b);
     }

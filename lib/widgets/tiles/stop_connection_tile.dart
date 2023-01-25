@@ -54,7 +54,7 @@ class _StopConnectionTileState extends State<StopConnectionTile> {
             if (!snapshot.hasData) {
               return const CircularProgressIndicator();
             }
-            return CircleIcon(busLine: snapshot.data!);
+            return CircleIconFromBusLine(busLine: snapshot.data!);
           },
         ),
         trailing: _timeStreamBuilderSubscriber(),

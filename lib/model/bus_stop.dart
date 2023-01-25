@@ -100,7 +100,7 @@ class BusStop {
         'longitud': longitud,
         'isFavorite': isFavorite,
         'connections':
-            List<StopConnection>.from(connections.map((x) => x.toFireStore())),
+            List<dynamic>.from(connections.map((x) => x.toFireStore())),
         'lastUpdate': Timestamp.now(),
       };
 

@@ -25,7 +25,7 @@ class StopTimingsListScreen extends StatelessWidget {
       previousBusStop = findPreviousStop(arguments);
     }
 
-    if (arguments.busStop.isDestionation == 1) {
+    if (arguments.busStop.isDestination == 1) {
       nextBusStop = arguments.busStop;
     } else {
       nextBusStop = findNextStop(arguments);

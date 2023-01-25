@@ -20,8 +20,8 @@ Future<void> setFavoriteBusLine(BusLine busLine) async {
 }
 
 Future<void> removeFavoriteBusLine(BusLine busLine) async {
-   busLine.isFavorite = false;
-   
+  busLine.isFavorite = false;
+
   // Get firestore instance and the path where to manage data
   final FirebaseFirestore db = FirebaseFirestore.instance;
   final CollectionReference busLineCollection =
@@ -44,6 +44,8 @@ Stream<List<BusLine>> getFavoriteBusLines() {
 }
 
 Future<void> setFavoriteBusStop(BusStop busStop) async {
+  busStop.isFavorite = true;
+
   // Get firestore instance and the path where to manage data
   final FirebaseFirestore db = FirebaseFirestore.instance;
   final CollectionReference busLineCollection =
@@ -57,6 +59,7 @@ Future<void> setFavoriteBusStop(BusStop busStop) async {
 }
 
 Future<void> removeFavoriteBusStop(BusStop busStop) async {
+  busStop.isFavorite = false;
   // Get firestore instance and the path where to manage data
   final FirebaseFirestore db = FirebaseFirestore.instance;
   final CollectionReference busLineCollection =
@@ -66,7 +69,7 @@ Future<void> removeFavoriteBusStop(BusStop busStop) async {
   busLineCollection.doc(busStop.uniqueId).delete();
 }
 
-Stream<List<BusStop>> getFavoriteBusStopes() {
+Stream<List<BusStop>> getFavoriteBusStopesStream() {
   // Get firestore instance and the path where to manage data
   final FirebaseFirestore db = FirebaseFirestore.instance;
   final CollectionReference busStopCollection =
@@ -76,4 +79,15 @@ Stream<List<BusStop>> getFavoriteBusStopes() {
       .get()
       .then((querySnapshot) => toBusStopList(querySnapshot))
       .asStream();
+}
+
+Future<List<BusStop>> getFavoriteBusStopesFuture() {
+  // Get firestore instance and the path where to manage data
+  final FirebaseFirestore db = FirebaseFirestore.instance;
+  final CollectionReference busStopCollection =
+      db.collection("Users").doc(userId).collection("BusStops");
+
+  return busStopCollection
+      .get()
+      .then((querySnapshot) => toBusStopList(querySnapshot));
 }

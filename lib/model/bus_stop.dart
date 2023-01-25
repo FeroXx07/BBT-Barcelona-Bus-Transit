@@ -19,7 +19,7 @@ class BusStop {
   String destination;
   int order; //Orden dentro del recorrido de la línea -- number : 12
   int isOrigin; //Indica si la parada es el origen de la línea -- number : 0
-  int isDestionation; //Indica si la parada es el destino de la línea -- number : 1
+  int isDestination; //Indica si la parada es el destino de la línea -- number : 1
   int direction; // 1 es anada, 2 es tornada
   double latitud;
   double longitud;
@@ -34,7 +34,7 @@ class BusStop {
     required this.adress,
     required this.order,
     required this.isOrigin,
-    required this.isDestionation,
+    required this.isDestination,
     required this.colorRectangle,
     required this.direction,
     required this.origin,
@@ -51,7 +51,7 @@ class BusStop {
         adress = json["properties"]["ADRECA"],
         order = json["properties"]["ORDRE"],
         isOrigin = json["properties"]["ES_ORIGEN"],
-        isDestionation = json["properties"]["ES_DESTI"],
+        isDestination = json["properties"]["ES_DESTI"],
         origin = json["properties"]["ORIGEN_SENTIT"],
         destination = json["properties"]["DESTI_SENTIT"],
         colorRectangle = "#${json["properties"]["COLOR_REC"]}",
@@ -67,13 +67,14 @@ class BusStop {
         adress = doc["adress"],
         order = doc["order"],
         isOrigin = doc["isOrigin"],
-        isDestionation = doc["isDestionation"],
-        origin = doc["properties"]["ORIGEN_SENTIT"],
-        destination = doc["properties"]["DESTI_SENTIT"],
-        colorRectangle = "#${doc["colorRectangle"]}",
+        isDestination = doc["isDestination"],
+        origin = doc["origin"],
+        destination = doc["destination"],
+        colorRectangle = doc["colorRectangle"],
         direction = doc["direction"],
         latitud = doc["latitud"],
-        longitud = doc["longitud"];
+        longitud = doc["longitud"],
+        isFavorite = doc["isFavorite"];
 
   Map<String, dynamic> toFirestore() => {
         'uniqueId': uniqueId,
@@ -83,13 +84,14 @@ class BusStop {
         'adress': adress,
         'order': order,
         'isOrigin': isOrigin,
-        'isDestionation': isDestionation,
+        'isDestination': isDestination,
         'origin': origin,
         'destination': destination,
         'colorRectangle': colorRectangle,
         'direction': direction,
         'latitud': latitud,
         'longitud': longitud,
+        'isFavorite': isFavorite,
         'lastUpdate': Timestamp.now(),
       };
 
@@ -137,37 +139,36 @@ Future<List<BusStop>> loadAllBusesStopsFromCode(int lineCode) async {
   return stopsList;
 }
 
-
 List<BusStop> toBusStopList(QuerySnapshot query) {
   final doc = query.docs;
   List<BusStop> list = doc.map((e) => BusStop.fromFireStore(e)).toList();
   return list;
 }
 
-  BusStop findPreviousStop(BusLineStopArguments arguments) {
-    return arguments.allStops.singleWhere(
-      (element) {
-        // First the must be in the same direction
-        if (element.direction == arguments.busStop.direction) {
-          // Secondly it must be the previous order in the line
-          return element.order == arguments.busStop.order - 1;
-        } else {
-          return false;
-        }
-      },
-    );
-  }
+BusStop findPreviousStop(BusLineStopArguments arguments) {
+  return arguments.allStops.singleWhere(
+    (element) {
+      // First the must be in the same direction
+      if (element.direction == arguments.busStop.direction) {
+        // Secondly it must be the previous order in the line
+        return element.order == arguments.busStop.order - 1;
+      } else {
+        return false;
+      }
+    },
+  );
+}
 
-  BusStop findNextStop(BusLineStopArguments arguments) {
-    return arguments.allStops.singleWhere(
-      (element) {
-        // First the must be in the same direction
-        if (element.direction == arguments.busStop.direction) {
-          // Secondly it must be the previous order in the line
-          return element.order == arguments.busStop.order + 1;
-        } else {
-          return false;
-        }
-      },
-    );
-  }
+BusStop findNextStop(BusLineStopArguments arguments) {
+  return arguments.allStops.singleWhere(
+    (element) {
+      // First the must be in the same direction
+      if (element.direction == arguments.busStop.direction) {
+        // Secondly it must be the previous order in the line
+        return element.order == arguments.busStop.order + 1;
+      } else {
+        return false;
+      }
+    },
+  );
+}

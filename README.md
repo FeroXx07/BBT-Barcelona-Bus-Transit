@@ -6,6 +6,12 @@ This app relies critically on the Transports Metropolitans de Barcelona general 
 Sections or services of the api that the app uses:
 - API TMB - **i-Bus** (v1)
 - API TMB - **Transit** (v1)
+- 
+<img src="https://github.com/FeroXx07/BBT-Barcelona-Bus-Transit/assets/59049844/d3dd19fe-4652-4d0e-98e7-549b814626c8" width="300">
+                                                                               
+<img src="https://github.com/FeroXx07/BBT-Barcelona-Bus-Transit/assets/59049844/c02535a2-987a-4307-998f-c0f26ebda4b2" width="300">
+
+<img src="https://github.com/FeroXx07/BBT-Barcelona-Bus-Transit/assets/59049844/e6039bf9-5f1a-4f2e-8d5b-611282a5578a" width="300">
 
 [Terms of use of the API](https://developer.tmb.cat/docs/terms-conditions)
 
